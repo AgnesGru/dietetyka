@@ -76,3 +76,27 @@ alter table Pacjenci.Payment
 	add constraint FK_Payment_To_Visit_On_VisitID
 		Foreign Key (VisitID)
 			References Pacjenci.Visit(VisitID);
+
+alter table Pacjenci.Payment
+	add constraint DF_PacjenciPayment_PaymentStatus_True Default(1) for PaymentStatus;
+
+-- TWORZENIE DIAGRAMÓW BD
+
+-- add new table IllnessPatient for many_to_many relation between Illness and Pacjenci tables
+
+create table Pacjenci.IllnessPatient
+	(PatientId int not null,
+	IllnessId int not null);
+
+select * from Pacjenci.IllnessPatient
+-- dodawanie constraints 
+
+alter table Pacjenci.IllnessPatient
+	add constraint FK_IllnessPatient_To_Pacjenci_On_PatientId
+		Foreign Key (PatientId)
+			References Pacjenci.Pacjenci(PatientID);
+
+alter table Pacjenci.IllnessPatient
+	add constraint FK_IllnessPatient_To_Illness_On_IllnessId
+		Foreign Key (IllnessId)
+			References Pacjenci.Illness(IllnessID);
