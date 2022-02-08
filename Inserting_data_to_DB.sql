@@ -1,7 +1,7 @@
 insert into Pacjenci.Pacjenci(FirstName, LastName, Gender, DoB, Height)
 --values ('Aga', 'Gruszecka', 'K', '5/12/1981', 166);
 
--- wstaw dane do tabeli Pacjenci
+-- insert into Pacjenci table
 
 select * from Pacjenci.Pacjenci;
 insert into Pacjenci.Pacjenci(FirstName, LastName, Gender, DoB, Height)
@@ -64,7 +64,7 @@ DROP CONSTRAINT FK_Illness_To_Pacjenci_On_PatientID;
 ALTER TABLE Pacjenci.Illness   
 DROP COLUMN PatientId;
 
--- wstawianie danych do tabeli IllnessPatient
+-- insert into IllnessPatient table
 select * from Pacjenci.IllnessPatient;
 
 insert into Pacjenci.IllnessPatient(PatientId, IllnessId)
@@ -77,8 +77,8 @@ values
 
 -- wstawianie danych do tabeli Visit
 select * from Pacjenci.Visit;
--- wyliczenie wartoœci BMI jest bardziej skomplikowane dlatego najpierw
--- usunê constraint not null z kolumny BMI
+-- counting BMI values needs casting the type of the object
+-- remove constraint not null from BMI column
 alter table Pacjenci.Visit
 alter column BMI decimal(5,2) null;
 
@@ -92,18 +92,36 @@ values
 
 -- wyliczanie BMI
 
-select p.FirstName as name, v.Weight as weight, p.Height as height, v.BMI as BMI
-from Pacjenci.Pacjenci as p
-left outer join Pacjenci.Visit as v
-	on p.Patientid = v.PatientId
-where weight is not null;
-
 update Pacjenci.Visit
-set BMI = cast(v.Weight as float)/((cast(p.Height as float)/100)*(cast(p.Height as float)))
+set BMI = cast(v.Weight as float)/(cast(p.Height as float)/100*cast(p.Height as float)/100)
 from Pacjenci.Pacjenci as p
 join Pacjenci.Visit as v
 	on p.Patientid = v.PatientId
 where weight is not null;
 
+-- insert into Payment table
+-- DueDate is VisitDate + 7 days
+select * from Pacjenci.Payment;
 
+alter table Pacjenci.Payment
+alter column DueDate date null;
 
+insert into Pacjenci.Payment(Ammount, PaymentStatus, VisitId)
+values 
+(150, 1, 2),
+(150, 1, 3),
+(200, 0, 4),
+(100, 1, 5),
+(150, 1, 6),
+(200, 1, 7);
+
+Update Pacjenci.Payment
+set DueDate = Dateadd(day, 7, VisitDate) 
+FROM Pacjenci.Visit as v
+join Pacjenci.Payment as pay
+	on v.VisitId=pay.VisitId;
+
+select pay.DueDate, v.VisitDate
+from Pacjenci.Visit as v
+full outer join Pacjenci.Payment as pay
+	on v.VisitId = pay.VisitId;
