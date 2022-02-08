@@ -125,3 +125,4 @@ select pay.DueDate, v.VisitDate
 from Pacjenci.Visit as v
 full outer join Pacjenci.Payment as pay
 	on v.VisitId = pay.VisitId;
+
