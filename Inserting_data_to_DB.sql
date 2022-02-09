@@ -46,12 +46,12 @@ values
 -- insert data into Pacjenci.Illness
 insert into Pacjenci.Illness(IllnessName)
 values 
-	('Obesity'),
-	('Allegy'),
-	('Diabetes'),
-	('Hypertension'),
-	('Celiac disease'),
-	('Atopic dermatitis');
+	--('Obesity'),
+	--('Allegy'),
+	--('Diabetes'),
+	--('Hypertension'),
+	--('Celiac disease'),
+	--('Atopic dermatitis');
 
 select * from Pacjenci.Illness;
 
@@ -86,7 +86,7 @@ insert into Pacjenci.Visit(Weight, PatientID, VisitDate)
 values 
 	--(86, 12, Cast(GETDATE() as date)),
 	--(39, 13, Cast(GETDATE() as date)), 
-	--(80, 14, Cast(GETDATE() as date)),
+	--(60, 1, Cast(GETDATE() as date)),
 	--(99, 15, Cast(GETDATE() as date)),
 	--(60, 1, Cast(GETDATE() as date));
 
@@ -108,18 +108,19 @@ alter column DueDate date null;
 
 insert into Pacjenci.Payment(Ammount, PaymentStatus, VisitId)
 values 
-(150, 1, 2),
-(150, 1, 3),
-(200, 0, 4),
-(100, 1, 5),
-(150, 1, 6),
-(200, 1, 7);
+--(150, 1, 2),
+--(150, 1, 3),
+--(200, 0, 4),
+--(100, 1, 8),
+--(150, 1, 9),
+--(200, 0, 10);
 
 Update Pacjenci.Payment
 set DueDate = Dateadd(day, 7, VisitDate) 
 FROM Pacjenci.Visit as v
 join Pacjenci.Payment as pay
-	on v.VisitId=pay.VisitId;
+	on v.VisitId=pay.VisitId
+where DueDate is null;
 
 select pay.DueDate, v.VisitDate
 from Pacjenci.Visit as v
