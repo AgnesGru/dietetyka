@@ -16,3 +16,19 @@ Pivot
 count(PatientId) 
 for month in ([January], [February])
 ) as p;
+-- now it is time to unpivot :))
+-- first step
+select FirstName, [January], [February]
+into #TabUnpivot
+From #Tab4Pivot
+Pivot
+(
+count(PatientId) 
+for month in ([January], [February])
+) as p;
+--second step
+select Unpiv.FirstName, Unpiv.PatientId, Unpiv.month
+From #TabUnpivot
+Unpivot(
+PatientId for month in ([January], [February])) as Unpiv
+order by FirstName;
