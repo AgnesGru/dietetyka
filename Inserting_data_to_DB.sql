@@ -1,4 +1,4 @@
-insert into Pacjenci.Pacjenci(FirstName, LastName, Gender, DoB, Height)
+ insert into Pacjenci.Pacjenci(FirstName, LastName, Gender, DoB, Height)
 --values ('Aga', 'Gruszecka', 'K', '5/12/1981', 166);
 
 -- insert into Pacjenci table
@@ -87,8 +87,8 @@ values
 	--(86, 12, Cast(GETDATE() as date)),
 	--(39, 13, Cast(GETDATE() as date)), 
 	--(80, 14, Cast(GETDATE() as date)),
-	--(100, 15, Cast(GETDATE() as date)),
-	--(60, 16, Cast(GETDATE() as date));
+	--(99, 15, Cast(GETDATE() as date)),
+	--(60, 1, Cast(GETDATE() as date));
 
 -- wyliczanie BMI
 
@@ -97,7 +97,7 @@ set BMI = cast(v.Weight as float)/(cast(p.Height as float)/100*cast(p.Height as 
 from Pacjenci.Pacjenci as p
 join Pacjenci.Visit as v
 	on p.Patientid = v.PatientId
-where weight is not null;
+where BMI is null;
 
 -- insert into Payment table
 -- DueDate is VisitDate + 7 days
