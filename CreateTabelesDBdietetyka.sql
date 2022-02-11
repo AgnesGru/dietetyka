@@ -1,4 +1,4 @@
--- create table Pacjenci
+ -- create table Pacjenci
 use dietetyka;
 create table Pacjenci.Pacjenci
 (
@@ -109,3 +109,18 @@ alter table Pacjenci.IllnessPatient
 	add constraint FK_IllnessPatient_To_Illness_On_IllnessId
 		Foreign Key (IllnessId)
 			References Pacjenci.Illness(IllnessID);
+
+-- create another table 'DietType' that contains infoemation about type of diete each patient follow
+create table Pacjenci.DietType
+	(DietId int not null identity(1,1),
+	DietType varchar(30) not null unique,
+	PatientId int unique);
+
+alter table Pacjenci.DietType
+	add constraint PK_PacjenciDietType_DietId
+		Primary Key (DietId); 
+
+alter table Pacjenci.DietType
+	add constraint FK_DietType_To_Pacjenci_On_PatientId
+		Foreign Key (PatientId)
+			References Pacjenci.Pacjenci(PatientId);

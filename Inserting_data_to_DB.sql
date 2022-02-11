@@ -51,6 +51,11 @@ values
 	--('Diabetes'),
 	--('Hypertension'),
 	--('Celiac disease'),
+	--('Cancer'),
+	--('Artherosclerosis'),
+	--('Ischemic heart disease'),
+	--('Rheumatoid arthritis'),
+	--('Asthma'),
 	--('Atopic dermatitis');
 
 select * from Pacjenci.Illness;
@@ -84,11 +89,11 @@ alter column BMI decimal(5,2) null;
 
 insert into Pacjenci.Visit(Weight, PatientID, VisitDate)
 values 
-	--(86, 12, Cast(GETDATE() as date)),
-	--(39, 13, Cast(GETDATE() as date)), 
-	--(60, 1, Cast(GETDATE() as date)),
-	--(99, 15, Cast(GETDATE() as date)),
-	--(60, 1, Cast(GETDATE() as date));
+	--(87, 12, Cast(GETDATE() as date)),
+	--(80, 14, Cast(GETDATE() as date)), 
+	--(61, 1, Cast(GETDATE() as date)),
+	--(98, 15, Cast(GETDATE() as date)),
+	--(80, 9, Cast(GETDATE() as date));
 
 -- wyliczanie BMI
 
@@ -113,7 +118,24 @@ values
 --(200, 0, 4),
 --(100, 1, 8),
 --(150, 1, 9),
---(200, 0, 10);
+--(200, 0, 10),
+--(120, 1, 16),
+--(180, 1, 14),
+--(110, 1, 15),
+--(160, 1, 17),
+--(250, 0, 18);
+
+select pay.PaymentStatus, v.VisitId, v.PatientId, v.weight, p.FirstName 
+from Pacjenci.Payment as pay
+full outer join Pacjenci.Visit as v
+	on pay.VisitId=v.VisitId
+join Pacjenci.Pacjenci as p
+	on v.PatientId=p.PatientID;
+
+-- after a while I decided that Unique value in DietType is wrong idea because one diet can be asigned to
+--many patients. So unique constraint has to be removed
+alter table Pacjenci.DietType
+drop constraint UQ__DietType__970EC3672AB1AB89 ;
 
 Update Pacjenci.Payment
 set DueDate = Dateadd(day, 7, VisitDate) 
@@ -126,4 +148,23 @@ select pay.DueDate, v.VisitDate
 from Pacjenci.Visit as v
 full outer join Pacjenci.Payment as pay
 	on v.VisitId = pay.VisitId;
+
+-- inserting data into table DietType
+select p.FirstName, p.PatientID, i.IllnessName
+from Pacjenci.Pacjenci as p
+full outer join Pacjenci.IllnessPatient as ip
+	on p.PatientID=ip.PatientId
+right join Pacjenci.Illness as i
+	on ip.IllnessId=i.IllnessId;
+
+insert into Pacjenci.DietType(DietType, PatientId)
+values 
+--('1000kcal', 15),
+--('Dabrowska Fast', 1),
+--('LGI',null ),
+--('Vegetarian', 15),
+--('Non-Gluten', 13),
+--('Vegan', null),
+--('DiaryFree', 14),
+--('DiaryFree', 7);
 
