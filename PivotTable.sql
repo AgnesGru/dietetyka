@@ -63,6 +63,7 @@ sum(Ammount)
 For
 PaymentStatus 
 in ([1], [0])) as piv;
+
 -- at the beginging I had 0 and 1 in column PaymentStatus but after unpivoting I have paid and delay
 select Unpiv.FirstName, Unpiv.Ammount, Unpiv.PaymentStatus
 From #Tab1Unpivot

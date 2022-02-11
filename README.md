@@ -5,4 +5,7 @@ Currently, the project contains sql files in which the BD is created, completed 
 * pivot, 
 * unpivot, 
 * group by, 
-* having ...
+* having,
+* join,
+* over,
+* where...
