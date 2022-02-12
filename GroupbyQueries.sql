@@ -27,7 +27,7 @@ left outer join Pacjenci.Visit as v
 	on p.PatientID = v.PatientId
 left outer join Pacjenci.Payment as pay
 	on v.VisitId = pay.VisitId
-where ((pay.PaymentStatus <> 0 or pay.PaymentStatus is null)
-and p.FirstName like 'A__')
+where (pay.PaymentStatus <> 0 or pay.PaymentStatus is null)
+--and p.FirstName like 'A__')
 group by p.FirstName
-having avg(pay.Ammount) > 100;
+having avg(pay.Ammount) > 150;
