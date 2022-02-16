@@ -136,7 +136,7 @@ join Pacjenci.Pacjenci as p
 --many patients. So unique constraint has to be removed
 alter table Pacjenci.DietType
 drop constraint UQ__DietType__970EC3672AB1AB89 ;
-
+-- changed to PaymentNew
 Update Pacjenci.Payment
 set DueDate = Dateadd(day, 7, VisitDate) 
 FROM Pacjenci.Visit as v

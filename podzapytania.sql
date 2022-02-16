@@ -36,4 +36,37 @@ join Pacjenci.PaymentNew as pay
 where p.FirstName = 'Iwona'
 group by p.FirstName);
  
-select * from Pacjenci.Pacjenci;
+select * from Pacjenci.VisitParameters;
+select * from Pacjenci.PaymentNew;
+
+-- raport with all invoices, patient id and global mean
+SELECT v.PatientId , pay.Ammount,(SELECT AVG(Ammount) FROM Pacjenci.PaymentNew) AS avg_total_payment
+FROM Pacjenci.VisitParameters as v
+join Pacjenci.PaymentNew as pay
+	on v.VisitParametersId = pay.VisitParametersId
+ORDER BY v.PatientID desc;
+
+--zestawienie ze œredni¹ faktur dla danego klienta
+        
+SELECT v.PatientID, AVG(Ammount) avg_payment
+FROM Pacjenci.PaymentNew AS pay
+join Pacjenci.VisitParameters as v
+	on pay.VisitParametersID = v.VisitParametersID
+where PatientID in (select PatientID from Pacjenci.VisitParameters group by PatientID)
+group by v.PatientID;
+
+SELECT v.PatientId ,pay.Ammount
+	--(SELECT AVG(Ammount) FROM Pacjenci.PaymentNew AS pay
+	--join Pacjenci.VisitParameters as v
+	--on pay.VisitParametersID = v.VisitParametersID
+	--where v.PatientID = 14) as avg_cust
+	from  Pacjenci.PaymentNew AS pay
+	join Pacjenci.VisitParameters as v
+		on pay.VisitParametersID = v.VisitParametersID
+	order by PatientID;
+
+-- now it is time to addmit my DB was badly designed
+-- What next: add FK for table PaymentNew conected to PatientID from table Pacjenci
+-- remove PatientId column from VisitParameters table
+
+
