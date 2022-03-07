@@ -8,4 +8,13 @@ Currently, the project contains sql files in which the BD is created, completed 
 * having,
 * join,
 * over,
-* where...
+* where,
+* analytic functins
+Analytic functions can be used only in Select and order by  clauses because the are working on wirtual table. 
+The order of clauses:
+ - where
+ - group by
+ - having
+ - analytic functins
+ - order by
+ - limit
