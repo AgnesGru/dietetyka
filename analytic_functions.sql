@@ -41,6 +41,21 @@ join Pacjenci.PaymentNew as pay
 	on p.PatientID=pay.PatientId
 order by pay.Ammount desc; --B£¥D!!!!!
 
---Groups
+--Rank functions
 
+select p.FirstName,
+	row_number() over (order by p.FirstName) as row_number,
+	rank() over (order by p.FirstName) as rank,
+	dense_rank() over (order by p.FirstName) as dense_rank,
+	ntile(3) over (order by p.FirstName) as ntile
+	from Pacjenci.PaymentNew pay
+	join Pacjenci.Pacjenci p
+		on pay.PatientId=p.PatientID
+	where FirstName in ('Aga', 'Andrzej', 'Iwona');
 
+select p.FirstName, p.Gender,
+	row_number() over (Partition by p.Gender order by p.FirstName) as row_number
+	from Pacjenci.PaymentNew pay
+	join Pacjenci.Pacjenci p
+		on pay.PatientId=p.PatientID
+	where FirstName in ('Aga', 'Andrzej', 'Iwona');
